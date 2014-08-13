@@ -1,0 +1,503 @@
+<version>
+	4.0.11
+</version>
+<whatsnew>
+	1. In view templates/header, added link navbar to redirect to view event/view if CurrentEventID is set, else do nothing.
+</whatsnew>
+<author>
+	J. V. Ambata
+</author>
+<changelog>
+	<model>
+		<tlkpdivision>
+			<getAuthorCompanyDivisions>
+				Get all divisions with DivisionID > 0 (DivisionID = -1 is "other")
+			</getAuthorCompanyDivisions>
+			<getDivision>
+				Get a specific division, based on a given DivisionID
+			</getDivision>
+		</tlkpdivision>
+		<tlkpfile>
+			<getFiles>
+				Get files for specified session IDs
+			</getFiles>
+			<getFile>
+				Get file for a specified file ID
+			</getFile>
+		</tlkpfile>
+		<tlkpsettings>
+			<getAppSettings>
+				Get the app settings such as AuthorCompany, AuthorDivision, Version, etc.
+			</getAppSettings>
+		</tlkpsettings>
+		<tmasevent>
+			<getAllEvents>
+				Get all events regardless of privacy
+			</getAllEvents>
+			<getEventsByPrivacy>
+				Get all events based on the privacy set in the app settings
+			</getEventsByPrivacy>
+			<getEvent>
+				Get a specific event based on a given EventID
+			</getEvent>
+		</tmasevent>
+		<tmassession>
+			<getSessions>
+				Get all sessions for an event
+			</getSessions>
+		</tmassession>
+		<tmasspeaker>
+			<getSpeakers>
+				Get speakers for selected sessions
+			</getSpeakers>
+		</tmasspeaker>
+		<tmasuser>
+			<getUser>
+				Get a specific user based on a given UserID
+			</getUser>
+			<getUsers>
+				Get users with UserID in the array specified
+			</getUsers>
+			<getUserSignin>
+				Get a specific user based on his sign in credentials
+			</getUserSignin>
+			<updateUserField>
+				Update a field of a user based on a given UserID
+			</updateUserField>
+		</tmasuser>
+		<trelsessionspeaker>
+			<getEventSpeakers>
+				Get speakers for the specified event
+			</getEventSpeakers>
+			<getSessionSpeakers>
+				Get speakers for a session
+			</getSessionSpeakers>
+		</trelsessionspeaker>
+		<treluserevent>
+			<getUsersEvent>
+				Get users in the specified event
+			</getUsersEvent>
+			<getUserEvent>
+				Get user-event relationship based on given UserID, and EventID
+			</getUserEvent>
+		</treluserevent>
+		<trelusersession>
+			<getUserSessions>
+				Get sessions of a specified user
+			</getUserSessions>
+			<insertUserSession>
+				Insert a user-session relationship entry
+			</insertUserSession>
+			<deleteUserSession>
+				Delete a user-session relationship entry
+			</deleteUserSession>
+		</trelusersession>
+		<ttrnalert>
+			<getAlerts>
+				Get alerts in the specified event
+			</getAlerts>
+		</ttrnalert>
+		<ttrncomment>
+			<getComments>
+				Get comments for specified post ids
+			</getComments>
+			<getPostComments>.
+				Get comments for a specified post
+			</getPostComments>
+			<insertComment>
+				Insert a comment
+			</insertComment>
+		</ttrncomment>
+		<ttrnpost>
+			<getPosts>
+				Get posts for a specified event, and optionally for a specific recipient ("To" field)
+			</getPosts>
+			<insertPost>
+				Insert a post
+			</insertPost>
+		</ttrnpost>
+	</model>
+	<view>
+		<alert>
+			<listing>
+				Display alert list
+			</listing>
+		</alert>
+		<app>
+			<about>
+				<version>
+					Display the version number based on the app settings; Lorem ipsum placeholder
+				</version>
+				<team>
+					Thumbnail, and text placeholders
+				</team>
+			</about>
+			<contactus>
+			</contactus>
+			<help>
+			</help>
+		</app>
+		<event>
+			<about>
+				Display event summary
+			</about>
+			<info>
+			</info>
+			<listing>
+				Display event list
+			</listing>
+			<view>
+				Display ongoing (current) session; Allow the signed-in user to write/publish a post (-1: public, 0: private; >0: specific session)
+			</view>
+		</event>
+		<file>
+			<listing>
+				Display all files available for download
+			</listing>
+		</file>
+		<session>
+			<listing>
+				Display list of sessions (schedule)
+			</listing>
+			<view>
+				Display session details
+			</view>
+		</session>
+		<speaker>
+			<listing>
+				Display list of speakers
+			</listing>
+		</speaker>
+		<templates>
+			<footer>
+				Display the AuthorDivision, and the links for help, about, and contact us.
+			</footer>
+			<header>
+				Display the AppName, sign in form if not yet signed in (my account button, and sign out button otherwise), alert message, and page header
+			</header>
+			<event-offcanvas>
+				Left offcanvas navigation area, and the right part as the content (to be specified by the controller); added a badge in the alerts link (BAD PRACTICE! Accessing the model through the view - for the counter)
+			</event-offcanvas>
+			<event-nav-pills>
+				Top nav-pills navigation area, and the bottom part as the content (to be specified by the controller)
+			</event-nav-pills>
+		</templates>
+		<user>
+			<details>
+				Display the signed-in user details
+			</details>
+			<edit>
+				Edit a specific field
+			</edit>
+			<listing>
+				Display list of users (attendees)
+			</listing>
+			<view>
+				Display user details, and posts
+			</view>
+		</user>
+		<usersession>
+			<listing>
+				Display sessions of a user for a particular event (aka "My Schedule")
+			</listing>
+		</usersession>
+	</view>
+	<controller>
+		<alert>
+			<main-functions>
+				<construct>
+					Load: model, form helper, session library
+				</construct>
+				<listing>
+					Get alert list, display on listing page
+				</listing>
+			</main-functions>
+			<helper-functions>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</alert>
+		<app>
+			<main-functions>
+				<construct>
+					Load: model, form helper, form validation library, session library
+				</construct>
+				<help>
+					Go to help page
+				</help>
+				<about>
+					Go to about page
+				</about>
+				<contactus>
+					Go to contactus page
+				</contactus>
+			</main-functions>
+			<helper-functions>
+			</helper-functions>
+		</app>
+		<comment>
+			<main-functions>
+				<construct>
+					Load: model, form helper, session library
+				</construct>
+				<write>
+					Insert comment in a post
+				</write>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<IsSessionSelected>
+					Determines if the user has selected a valid SessionID
+				</IsSessionSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</comment>
+		<event>
+			<main-functions>
+				<construct>
+					Load: model, form helper, form validation library, session library
+				</construct>
+				<listing>
+					Get events list, display on listing page
+				</listing>
+				<view>
+					Params: EventID; Display the home page of the event (posts, alerts, etc.)
+				</view>
+				<about>
+					Params: EventID; Displays the summary of the event
+				</about>
+				<info>
+					Params: EventID; Displays the helpful information (organizing team, contact info, etc.)
+				</info>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</event>
+		<file>
+			<main-functions>
+				<construct>
+					Load: model, form helper, download helper, session library
+				</construct>
+				<listing>
+					Get files list, display on listing page
+				</listing>
+				<download>
+					Get file, force download to user
+				</download>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<IsFileSelected>
+					Determines if the user has selected a valid FileID
+				</IsFileSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</file>
+		<post>
+			<main-functions>
+				<construct>
+					Load: model, form helper, session library
+				</construct>
+				<write>
+					Write/publish post
+				</write>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<IsSessionSelected>
+					Determines if the user has selected a valid SessionID
+				</IsSessionSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</post>
+		<session>
+			<main-functions>
+				<construct>
+					Load: model, form helper, form validation library, session library
+				</construct>
+				<listing>
+					Get sessions list, display on listing page
+				</listing>
+				<view>
+					Display session details, and speakers for the session
+				</view>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<IsSessionSelected>
+					Determines if the user has selected a valid SessionID
+				</IsSessionSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</session>
+		<speaker>
+			<main-functions>
+				<construct>
+					Load: model, form helper, form validation library, session library
+				</construct>
+				<listing>
+					Get speakers list, display on listing page
+				</listing>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</speaker>
+		<user>
+			<main-functions>
+				<construct>
+					Load: model, form helper, session library
+				</construct>
+				<signin>
+					Processes the sign in credentials provided by the user. If valid, allow app access; else, reject.
+				</signin>
+				<signout>
+					Unsets all userdata (session)
+				</signout>
+				<view>
+					Params: UserID; Display the user's details, and posts for the current event
+				</view>
+				<details>
+					Displays the signed-in user details (my account)
+				</details>
+				<edit>
+					Params: Field; Display the editing page of a specific field of the user
+				</edit>
+				<update>
+					Params: Field; Updates a specific field of the user
+				</update>
+				<listing>
+					Get users list (attendees), display on listing page
+				</listing>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<goToMyAccount>
+					Redirect to my account
+				</goToMyAccount>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</user>
+		<usersession>
+			<main-functions>
+				<construct>
+					Load: model, form helper, form validation library, session library
+				</construct>
+				<update>
+					Include/remove a session from the user's schedule
+				</update>
+				<listing>
+					Get sessions list of the user, display on listing page (aka "My Schedule")
+				</listing>
+			</main-functions>
+			<helper-functions>
+				<setAlertStatusAndMessage>
+					Set AlertStatus, and AlertMessage in templates/header.php
+				</setAlertStatusAndMessage>
+				<IsUserSignedIn>
+					Determines if the user is signed in, or not
+				</IsUserSignedIn>
+				<IsEventSelected>
+					Determines if the user has selected a valid EventID
+				</IsEventSelected>
+				<IsSessionSelected>
+					Determines if the user has selected a valid SessionID
+				</IsSessionSelected>
+				<DoesUserHaveAccess>
+					Determines if the user has access to the selected event
+				</DoesUserHaveAccess>
+			</helper-functions>
+		</usersession>
+	</controller>
+	<others>
+		<index>
+			Set default timezone to be Asia/Manila (not working)
+		</index>
+		<htaccess>
+			Updated .htaccess with Debug, and Release RewriteBase
+		</htaccess>
+		<config>
+			In application/config/config.php, set index_page = ''
+		</config>
+	</others>
+</changelog>
